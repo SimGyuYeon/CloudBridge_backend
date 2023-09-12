@@ -5,9 +5,12 @@ from .views import *
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register(r"filelist", FileListViewSet, basename="filelist")
+router.register(r"model", ModelListViewSet, basename="filelist")
+router.register(r"pred", PredListViewSet, basename="filelist")
+router.register(r"images", GraphListViewSet, basename="filelist")
 
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("api/upload/", UploadView.as_view(), name="upload"),
+    path("upload/", UploadView.as_view(), name="upload"),
 ]
