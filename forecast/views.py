@@ -6,7 +6,8 @@ from .serializers import *
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework.decorators import action
-
+from script.model_learn import sarima_learn
+import pandas as pd
 
 class FileListViewSet(viewsets.ModelViewSet):
     queryset = FileList.objects.all()
@@ -37,9 +38,10 @@ class FileListViewSet(viewsets.ModelViewSet):
 
 
 class ModelListViewSet(viewsets.ModelViewSet):
-    queryset = ModelList.objects.all()
-    serializer_class = ModelListSerializer
-
+    @action(detail=True, methods=["GET"], url_path="detail")
+    def custom_detail(self, request, pk=None):
+        df = pd.read_csv('../script/temp_data.csv', index_col='dt', parse_dates=['dt'])
+        sarima_learn(df)
     # # 기본적인 CRUD 엔드포인트가 있고, 여기에 추가할 커스텀 엔드포인트를 정의합니다.
     # @action(detail=True, methods=["GET"], url_path="detail")
     # def custom_detail(self, request, pk=None):
@@ -52,6 +54,9 @@ class ModelListViewSet(viewsets.ModelViewSet):
     #     )  # 직렬화를 위해 Serializer를 사용합니다.
     #     return Response(serializer.data)
 
+class ModelLearnViewSet(viewsets.ModelViewSet):
+    queryset = ModelList.objects.all()
+    serializer_class = ModelListSerializer
 
 class PredListViewSet(viewsets.ModelViewSet):
     queryset = PredList.objects.all()
