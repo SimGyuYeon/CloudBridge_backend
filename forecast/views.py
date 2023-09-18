@@ -6,6 +6,8 @@ from .serializers import *
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from script.model_learn import sarima_learn
+import pandas as pd
 
 
 class FileListViewSet(viewsets.ModelViewSet):
@@ -43,6 +45,17 @@ class FileListViewSet(viewsets.ModelViewSet):
 
 
 class ModelListViewSet(viewsets.ModelViewSet):
+
+    queryset = ModelList.objects.all()
+    serializer_class = ModelListSerializer
+
+    @action(detail=True, methods=["GET"], url_path="detail")
+    def custom_detail(self, request, pk=None):
+        df = pd.read_csv("../script/temp_data.csv", index_col="dt", parse_dates=["dt"])
+        sarima_learn(df)
+
+
+class ModelLearnViewSet(viewsets.ModelViewSet):
     queryset = ModelList.objects.all()
     serializer_class = ModelListSerializer
 

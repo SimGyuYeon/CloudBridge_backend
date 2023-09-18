@@ -5,9 +5,10 @@ from .views import *
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register(r"filelist", FileListViewSet, basename="filelist")
-router.register(r"model", ModelListViewSet, basename="modellist")
-router.register(r"pred", PredListViewSet, basename="predlist")
-router.register(r"images", GraphListViewSet, basename="imageslist")
+router.register(r"model", ModelListViewSet, basename="filelist")
+router.register(r"pred", PredListViewSet, basename="filelist")
+router.register(r"images", GraphListViewSet, basename="filelist")
+router.register(r"model_learn", ModelLearnViewSet, basename="filelist")
 
 
 urlpatterns = [
