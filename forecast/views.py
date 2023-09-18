@@ -44,18 +44,16 @@ class FileListViewSet(viewsets.ModelViewSet):
         return Response(responseJson)
 
 
-class ModelListViewSet(viewsets.ModelViewSet):
-
-    queryset = ModelList.objects.all()
-    serializer_class = ModelListSerializer
-
-    @action(detail=True, methods=["GET"], url_path="detail")
-    def custom_detail(self, request, pk=None):
-        df = pd.read_csv("../script/temp_data.csv", index_col="dt", parse_dates=["dt"])
+class CreateModel(APIView):
+    def get(self, request, format=None):
+        print("잘하고있니?")
+        df = pd.read_csv("./script/temp_data.csv", index_col="dt", parse_dates=["dt"])
         sarima_learn(df)
+        print("잘했어")
+        return Response("모델링 완료??")
 
 
-class ModelLearnViewSet(viewsets.ModelViewSet):
+class ModelListViewSet(viewsets.ModelViewSet):
     queryset = ModelList.objects.all()
     serializer_class = ModelListSerializer
 
