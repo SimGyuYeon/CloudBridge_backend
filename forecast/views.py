@@ -20,7 +20,7 @@ def create_model(request):
     # 오래 걸리는 작업 수행
     def do_task():
         # time.sleep(5)
-        df = pd.read_csv("./script/temp_data.csv", index_col="dt", parse_dates=["dt"])
+        df = pd.read_csv("./script/temp_data2.csv", index_col="dt", parse_dates=["dt"])
         sarima_learn(df)
         print("작업 완료")
 

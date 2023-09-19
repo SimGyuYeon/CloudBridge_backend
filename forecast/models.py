@@ -8,9 +8,9 @@ def upload_to_today(instance, filename):
     return f"uploads/{today}/{filename[:-3]}/{filename}"
 
 
-def upload_to_today(instance, filename):
-    today = datetime.now().strftime("%Y-%m-%d")
-    return f"uploads/{today}/{filename[:-6]}/{filename}"
+# def upload_to_today(instance, filename):
+#     today = datetime.now().strftime("%Y-%m-%d")
+#     return f"uploads/{today}/{filename[:-6]}/{filename}"
 
 
 # 바꿔도 됨
@@ -57,6 +57,8 @@ class PredList(models.Model):
 
 class GraphList(models.Model):
     # 바꿔도 됨
+    chart_image = models.ImageField(upload_to=upload_to_today, default="default.png")
+
     image1 = models.ImageField(upload_to=upload_to_today, default="default.png")
     image2 = models.ImageField(upload_to=upload_to_today, default="default.png")
     image3 = models.ImageField(upload_to=upload_to_today, default="default.png")
