@@ -9,6 +9,28 @@ from rest_framework.decorators import action
 from script.model_learn import sarima_learn
 import pandas as pd
 
+import threading
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+import time
+
+
+@api_view(["GET"])
+def create_model(request):
+    # 오래 걸리는 작업 수행
+    def do_task():
+        # time.sleep(5)
+        df = pd.read_csv("./script/temp_data.csv", index_col="dt", parse_dates=["dt"])
+        sarima_learn(df)
+        print("작업 완료")
+
+    # 스레드 생성 및 작업 시작
+    thread = threading.Thread(target=do_task)
+    thread.demon = True
+    thread.start()
+
+    return Response({"message": "작업이 시작되었습니다."})
+
 
 class FileListViewSet(viewsets.ModelViewSet):
     queryset = FileList.objects.all()
@@ -44,15 +66,6 @@ class FileListViewSet(viewsets.ModelViewSet):
         return Response(responseJson)
 
 
-class CreateModel(APIView):
-    def get(self, request, format=None):
-        print("잘하고있니?")
-        df = pd.read_csv("./script/temp_data.csv", index_col="dt", parse_dates=["dt"])
-        sarima_learn(df)
-        print("잘했어")
-        return Response("모델링 완료??")
-
-
 class ModelListViewSet(viewsets.ModelViewSet):
     queryset = ModelList.objects.all()
     serializer_class = ModelListSerializer
@@ -79,10 +92,10 @@ class UploadView(APIView):
             title = request.POST["title"]
             uploaded_file = request.FILES["file"]
             user_instance = User.objects.get(username="root")
-            모델_인스턴스 = FileList(
+            moedl_instance = FileList(
                 name=title, 파일=uploaded_file, user=user_instance, 진행현황="진행중"
             )
-            모델_인스턴스.save()  # 데이터베이스에 저장
+            moedl_instance.save()  # 데이터베이스에 저장
 
             return Response("파일 업로드 및 저장 성공")
 

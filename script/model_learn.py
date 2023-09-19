@@ -14,12 +14,10 @@ import statsmodels.api as sm
 from itertools import product
 from tqdm import tqdm
 
-import asyncio
-
 # data_h_df = pd.read_csv('./temp_data.csv', index_col='dt', parse_dates=['dt'])
 
 
-async def sarima_learn(data_h_df):
+def sarima_learn(data_h_df):
     print("sarima_learn 잘 돌고 있니?")
     p, q = range(0, 3), range(0, 3)
     d = range(0, 1)
@@ -145,6 +143,7 @@ async def sarima_learn(data_h_df):
                 print(str(param))
                 f.writelines("%s\n" % str(param))
         one_list = []
+        print("모델수행 완료")
 
     except:
         print("예외발생")
