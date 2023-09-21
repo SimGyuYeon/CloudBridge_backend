@@ -8,4 +8,5 @@ sqlparse==0.4.2
 psycopg2==2.9.3
 tzdata==2022.1
 print-color==0.4.5
-pandas
+pandas==2.1.0
+statsmodels==0.13.5
