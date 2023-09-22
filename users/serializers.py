@@ -56,6 +56,7 @@ class LoginSerializer(serializers.Serializer):
     )  # write_only 옵션을 통해 클라이언트->서버 방향의 역직렬화는 가능, 서버->클라이언트 방향의 직렬화는 불가능
 
     def validate(self, data):
+        print(data)
         user = authenticate(**data)
         if user:
             token = Token.objects.get(user=user)  # 토큰에서 유저 찾아 응답
@@ -63,3 +64,9 @@ class LoginSerializer(serializers.Serializer):
         raise serializers.ValidationError(
             {"error": "Unable to log in with provided credentials."}
         )
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = "__all__"

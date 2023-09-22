@@ -14,4 +14,5 @@ urlpatterns = [
     path("", include(router.urls)),
     path("upload/", UploadView.as_view(), name="upload"),
     path("create_model/", create_model, name="create_model"),
+    path("create_model2/", CreateModelView.as_view(), name="create_model2"),
 ]

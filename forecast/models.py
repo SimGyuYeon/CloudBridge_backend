@@ -1,16 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime
-
-
-def upload_to_today(instance, filename):
-    today = datetime.now().strftime("%Y-%m-%d")
-    return f"uploads/{today}/{filename[:-3]}/{filename}"
-
-
-# def upload_to_today(instance, filename):
-#     today = datetime.now().strftime("%Y-%m-%d")
-#     return f"uploads/{today}/{filename[:-6]}/{filename}"
+from .utils import *
 
 
 # 바꿔도 됨
@@ -42,8 +32,8 @@ class ModelList(models.Model):
 
 
 class PredList(models.Model):
-    pred_value = models.FloatField(("예측값"))
-    real_value = models.FloatField(("실측값"))
+    pred_value = models.FloatField(("예측값"), null=True)
+    real_value = models.FloatField(("실측값"), null=True)
     pred_dt = models.DateTimeField(("예측 시간"), auto_now=False, auto_now_add=False)
     created_dt = models.DateTimeField(auto_now=True, auto_now_add=False)
 
