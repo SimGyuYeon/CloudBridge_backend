@@ -14,40 +14,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .utils import *
 
-
-# @api_view(["GET"])
-# def create_model(request):
-#     # TODO: 오래 걸리는 작업 수행
-#     def do_task(file_id):
-#         df = pd.read_csv("./script/temp_data2.csv", index_col="dt", parse_dates=["dt"])
-#         # 모델생성 로직
-#         sarima_learn(df, file_id)
-#         print("모델 생성 완료")
-#         # 이미지 생성 로직
-#         print("이미지생성완료")
-#         # 이미지 생성 완료 후 DB에 경로 저장
-#         image1 = images_to_today("", "temp_data2.csv", "boxplot.png")
-#         image2 = images_to_today("", "temp_data2.csv", "histogram.png")
-#         image3 = images_to_today("", "temp_data2.csv", "scatter.png")
-#         image4 = images_to_today("", "temp_data2.csv", "violinplot.png")
-#         model_instance = GraphList(
-#             image1=image1,
-#             image2=image2,
-#             image3=image3,
-#             image4=image4,
-#             model_id=1,
-#             file_id=file_id,
-#         )
-#         model_instance.save()
-
-#     # 스레드 생성 및 작업 시작
-#     thread = threading.Thread(target=do_task, args=38)
-#     thread.demon = True
-#     thread.start()
-
-#     return Response({"message": "작업이 시작되었습니다."})
-
-
 def do_task(file_id):
     file_instance = FileList.objects.get(id=file_id)
     file_path = file_instance.파일
@@ -56,6 +22,11 @@ def do_task(file_id):
     df = pd.read_csv(file_path, index_col="dt", parse_dates=["dt"])
     # 모델생성 로직
     sarima_learn(df, file_id)
+    model_instance = ModelList(
+        name="SARIMA",
+        file_id=file_id,
+    )
+    model_instance.save()
     print("모델 생성 완료")
     # 이미지 생성 로직
     print("이미지생성완료")
@@ -65,17 +36,18 @@ def do_task(file_id):
     image2 = images_to_today("", folder_path, "histogram.png")
     image3 = images_to_today("", folder_path, "scatter.png")
     image4 = images_to_today("", folder_path, "violinplot.png")
-    model_instance = GraphList(
+    graph_instance = GraphList(
         image0=image0,
         image1=image1,
         image2=image2,
         image3=image3,
         image4=image4,
-        model_id=1,
-        file_id=13,
+        model_id=model_instance.id,
+        file_id=file_id,
     )
-    model_instance.save()
-
+    graph_instance.save()
+    file_instance.진행현황 = "진행완료"
+    file_instance.save()
 
 class CreateModelView(APIView):
     def get(self, request, *args, **kwargs):

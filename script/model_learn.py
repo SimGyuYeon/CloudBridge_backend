@@ -24,9 +24,10 @@ from forecast.models import FileList
 def savefig_lineplot(dates, real_value, pred_value, folder_name):
     sns.set(style="whitegrid", palette="pastel")
     plt.figure(figsize=(10, 6))
-    print("dates:", dates[-48:])
-    print("real_value:", real_value[-48:])
-    print("pred_value:", pred_value[-48:-25]+real_value[-24]+pred_value[-24:])
+
+    # pred_value와 real_value 안끊기게 연결
+    pred_value[-25] = real_value[-25]
+    
     sns.lineplot(x=dates[-48:], y=real_value[-48:], label="Actual", color="red")
     sns.lineplot(x=dates[-48:], y=pred_value[-48:], label="Prediction", color="blue")
     plt.xlabel("Date")
