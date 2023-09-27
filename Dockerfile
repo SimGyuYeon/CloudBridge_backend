@@ -10,6 +10,9 @@ ADD . /code
 
 RUN pip install -r requirements.txt
 
+RUN pip list
+
+RUN pwd && ls
 
 # Server
 

@@ -2,7 +2,12 @@ import os, json
 from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# <<<<<<< HEAD
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# =======
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(os.path.join(__file__, os.pardir) )))
+print(BASE_DIR)
+# >>>>>>> bd086d099ccada5100ae1035530ef7418fdc99a4
 
 
 # Quick-start development settings - unsuitable for production
