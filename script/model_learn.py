@@ -20,34 +20,42 @@ from matplotlib import font_manager, rc
 import seaborn as sns
 from forecast.models import FileList
 
+# 막대 그래프
+def savefig_bar(dates, real_value, pred_value, folder_name):
+    sns.set(style="whitegrid")
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x=dates, y=real_value, label="Actual", color="red")
+    sns.barplot(x=dates, y=pred_value, label="Prediction", color="blue")
+    plt.xlabel("Date")
+    plt.ylabel("Value")
+    plt.title("bar Plot of Prediction vs. Actual")
+    plt.legend()
+    plt.xticks(rotation=45)  # Rotate x-axis labels
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
+    plt.savefig(folder_name + "/bar.png")
+    plt.close()
+
 
 # 산점도 그래프
 def savefig_scatter(dates, real_value, pred_value, folder_name):
-    print("1111111111")
     sns.set(style="whitegrid")
     plt.figure(figsize=(10, 6))
-    print("22222222222")
     sns.scatterplot(
         x=dates, y=real_value, label="Actual", color="red", marker="x", s=100
     )
     sns.scatterplot(
         x=dates, y=pred_value, label="Prediction", color="blue", marker="o", s=100
     )
-    print("33333333333")
     plt.xlabel("Date")
     plt.ylabel("Value")
     plt.title("Scatter Plot of Prediction vs. Actual")
-    print("4444444444")
     plt.legend()
     plt.xticks(rotation=45)  # Rotate x-axis labels
-    print("555555555")
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
-    print("666666666")
     plt.savefig(folder_name + "/scatter.png")
-    print("77777777")
     plt.close()
-    print(folder_name + "/scatter.png")
 
 
 # 히스토그램 그래프
@@ -99,7 +107,7 @@ def savefig_violinplot(dates, real_value2, pred_value2, folder_name):
 def sarima_learn(data_h_df, file_id):
     file_instance = FileList.objects.get(id=file_id)
     file_path = file_instance.파일
-
+    folder_name = "media/" + os.path.dirname(str(file_path))
     p, q = range(0, 2), range(0, 2)
     d = range(0, 1)
     P, Q = range(0, 2), range(0, 2)
@@ -139,15 +147,6 @@ def sarima_learn(data_h_df, file_id):
                         order=trend_param,
                         seasonal_order=seasonal_params,
                     ).fit()
-                    # print(
-                    #     "Fit SARIMAX: trend_order={} seasonal_order={} AIC={}, BIC={}".format(
-                    #         trend_param,
-                    #         seasonal_params,
-                    #         result.aic,
-                    #         result.bic,
-                    #         end="\r",
-                    #     )
-                    # )
                     AIC.append(result.aic)
                     SARIMAX_order.append([trend_param, seasonal_params])
                 except:
@@ -229,16 +228,14 @@ def sarima_learn(data_h_df, file_id):
         real_value2 = real_value.copy()
         real_value2 = [x for x in real_value2 if x != "null"]
         pred_value2 = [x for x in pred_value2 if x != "null"]
-        print("파일위치:")
-        print(file_path)
-        parent_folder = "media/" + os.path.dirname(str(file_path))
-        print("상위 폴더:", parent_folder)
+
 
         # 이미지 저장
-        savefig_scatter(dates, real_value, pred_value, parent_folder)
-        savefig_histogram(dates, real_value, pred_value, parent_folder)
-        savefig_boxplot(dates, real_value, pred_value, parent_folder)
-        savefig_violinplot(dates, real_value, pred_value, parent_folder)
+        savefig_bar(dates, real_value, pred_value, folder_name)
+        savefig_scatter(dates, real_value, pred_value, folder_name)
+        savefig_histogram(dates, real_value, pred_value, folder_name)
+        savefig_boxplot(dates, real_value, pred_value, folder_name)
+        savefig_violinplot(dates, real_value, pred_value, folder_name)
     except Exception as e:
         print("예외발생")
         print(e)
