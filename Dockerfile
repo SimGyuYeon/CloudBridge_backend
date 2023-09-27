@@ -16,4 +16,4 @@ RUN pwd && ls
 
 EXPOSE 8000
 STOPSIGNAL SIGINT
-CMD ["gunicorn", "base.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["cd", "..", "&&", "gunicorn", "base.wsgi:application", "--bind", "0.0.0.0:8000"]
