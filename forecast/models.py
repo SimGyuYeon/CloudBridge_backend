@@ -46,9 +46,9 @@ class PredList(models.Model):
 
 
 class GraphList(models.Model):
-    # 바꿔도 됨
-    chart_image = models.ImageField(upload_to=upload_to_today, default="default.png")
-
+    # 메인차트
+    image0 = models.ImageField(upload_to=upload_to_today, default="default.png")
+    # 서브차트
     image1 = models.ImageField(upload_to=upload_to_today, default="default.png")
     image2 = models.ImageField(upload_to=upload_to_today, default="default.png")
     image3 = models.ImageField(upload_to=upload_to_today, default="default.png")

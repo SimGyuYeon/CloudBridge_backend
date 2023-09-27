@@ -60,11 +60,13 @@ def do_task(file_id):
     # 이미지 생성 로직
     print("이미지생성완료")
     # 이미지 생성 완료 후 DB에 경로 저장
+    image0 = images_to_today("", folder_path, "lineplot.png")
     image1 = images_to_today("", folder_path, "boxplot.png")
     image2 = images_to_today("", folder_path, "histogram.png")
     image3 = images_to_today("", folder_path, "scatter.png")
     image4 = images_to_today("", folder_path, "violinplot.png")
     model_instance = GraphList(
+        image0=image0,
         image1=image1,
         image2=image2,
         image3=image3,
