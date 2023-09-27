@@ -20,20 +20,20 @@ from matplotlib import font_manager, rc
 import seaborn as sns
 from forecast.models import FileList
 
-# 막대 그래프
-def savefig_bar(dates, real_value, pred_value, folder_name):
-    sns.set(style="whitegrid")
+# 라인 그래프
+def savefig_lineplot(dates, real_value, pred_value, folder_name):
+    sns.set(style="whitegrid", palette="pastel")
     plt.figure(figsize=(10, 6))
-    sns.barplot(x=dates, y=real_value, label="Actual", color="red")
-    sns.barplot(x=dates, y=pred_value, label="Prediction", color="blue")
+    sns.lineplot(x=dates[-48:], y=real_value[-48:], label="Actual", color="red")
+    sns.lineplot(x=dates[-48:], y=pred_value[-48:], label="Prediction", color="blue")
     plt.xlabel("Date")
     plt.ylabel("Value")
-    plt.title("bar Plot of Prediction vs. Actual")
+    plt.title("line Plot of Prediction vs. Actual")
     plt.legend()
     plt.xticks(rotation=45)  # Rotate x-axis labels
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
-    plt.savefig(folder_name + "/bar.png")
+    plt.savefig(folder_name + "/lineplot.png")
     plt.close()
 
 
@@ -231,7 +231,7 @@ def sarima_learn(data_h_df, file_id):
 
 
         # 이미지 저장
-        savefig_bar(dates, real_value, pred_value, folder_name)
+        savefig_lineplot(dates, real_value, pred_value, folder_name)
         savefig_scatter(dates, real_value, pred_value, folder_name)
         savefig_histogram(dates, real_value, pred_value, folder_name)
         savefig_boxplot(dates, real_value, pred_value, folder_name)
