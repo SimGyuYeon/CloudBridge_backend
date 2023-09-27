@@ -13,3 +13,4 @@ statsmodels==0.13.5
 tqdm
 matplotlib
 seaborn
+django-cors-headers
